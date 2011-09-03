@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>fr.gimmick.sonar</groupId>
+  <artifactId>sonar-l10n-plugin</artifactId>
+  <name>Sonar L10n plugin</name>
+  <description>L10n properties files analysis</description>
+  <packaging>sonar-plugin</packaging>
+  <version>0.1-SNAPSHOT</version>
+  <inceptionYear>2011</inceptionYear>
+
+  <developers>
+    <developer>
+      <name>Mickaël Tricot</name>
+    </developer>
+  </developers>
+
+  <properties>
+
+    <dependency.commons-collections.version>3.2.1</dependency.commons-collections.version>
+    <dependency.commons-configuration.version>1.6</dependency.commons-configuration.version>
+    <dependency.commons-io.version>2.0.1</dependency.commons-io.version>
+    <dependency.commons-lang.version>3.0.1</dependency.commons-lang.version>
+    <dependency.commons-logging.version>1.1.1</dependency.commons-logging.version>
+    <dependency.google-collections.version>1.0</dependency.google-collections.version>
+    <dependency.slf4j.version>1.5.6</dependency.slf4j.version>
+    <dependency.sonar.version>2.10</dependency.sonar.version>
+
+    <plugin.compiler.version>2.3.2</plugin.compiler.version>
+    <plugin.jrebel.version>1.0.7</plugin.jrebel.version>
+    <plugin.sonar-packaging.version>1.1</plugin.sonar-packaging.version>
+
+    <project.build.javaVersion>1.6</project.build.javaVersion>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+  </properties>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${dependency.sonar.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-check-api</artifactId>
+      <version>${dependency.sonar.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${dependency.slf4j.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>${dependency.commons-collections.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-configuration</groupId>
+      <artifactId>commons-configuration</artifactId>
+      <version>${dependency.commons-configuration.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${dependency.commons-io.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${dependency.commons-lang.version}</version>
+    </dependency>
+
+    <!--Exclude commons-logging-->
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>${dependency.commons-logging.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.collections</groupId>
+      <artifactId>google-collections</artifactId>
+      <version>${dependency.google-collections.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <version>${plugin.sonar-packaging.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <pluginKey>L10n</pluginKey>
+          <pluginClass>fr.gimmick.sonar.l10n.L10nPlugin</pluginClass>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${plugin.compiler.version}</version>
+        <configuration>
+          <target>${project.build.javaVersion}</target>
+          <source>${project.build.javaVersion}</source>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>jrebel</id>
+      <activation>
+        <property>
+          <name>jrebel</name>
+        </property>
+      </activation>
+      <properties>
+        <javaagent>-javaagent:${env.REBEL_HOME}/jrebel.jar</javaagent>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>jrebel-maven-plugin</artifactId>
+            <version>${plugin.jrebel.version}</version>
+            <executions>
+              <execution>
+                <id>generate-rebel-xml</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
