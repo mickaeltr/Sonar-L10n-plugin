@@ -20,6 +20,8 @@
 
   <properties>
 
+    <sonar.runtimeVersion>2.10</sonar.runtimeVersion>
+
     <dependency.commons-collections.version>3.2.1</dependency.commons-collections.version>
     <dependency.commons-configuration.version>1.6</dependency.commons-configuration.version>
     <dependency.commons-io.version>2.0.1</dependency.commons-io.version>
@@ -27,7 +29,6 @@
     <dependency.commons-logging.version>1.1.1</dependency.commons-logging.version>
     <dependency.google-collections.version>1.0</dependency.google-collections.version>
     <dependency.slf4j.version>1.5.6</dependency.slf4j.version>
-    <dependency.sonar.version>2.10</dependency.sonar.version>
 
     <plugin.compiler.version>2.3.2</plugin.compiler.version>
     <plugin.jrebel.version>1.0.7</plugin.jrebel.version>
@@ -43,13 +44,13 @@
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>${dependency.sonar.version}</version>
+      <version>${sonar.runtimeVersion}</version>
     </dependency>
 
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-check-api</artifactId>
-      <version>${dependency.sonar.version}</version>
+      <version>${sonar.runtimeVersion}</version>
     </dependency>
 
     <dependency>

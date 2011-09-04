@@ -29,8 +29,6 @@
 Build and run a Sonar instance with embedded database:
 
     mvn clean install org.codehaus.sonar:sonar-dev-maven-plugin::start-war
-        -Dsonar.runtimeVersion=2.10
-        -Dsonar.workDir=/tmp/sonar
 
 Go to the Sonar instance at <http://localhost:9000/>:
 
