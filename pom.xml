@@ -20,8 +20,8 @@
 
   <scm>
     <connection>scm:git:git@github.com:mickaeltr/Sonar-L10n-plugin.git</connection>
-    <url>scm:git:git@github.com:mickaeltr/Sonar-L10n-plugin.git</url>
     <developerConnection>scm:git:git@github.com:mickaeltr/Sonar-L10n-plugin.git</developerConnection>
+    <url>http://github.com/mickaeltr/Sonar-L10n-plugin</url>
   </scm>
 
   <properties>
