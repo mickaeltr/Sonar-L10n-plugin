@@ -33,42 +33,56 @@ public final class BundleProjectBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(BundleProjectBuilder.class);
 
     /**
-     * Build the BundleProject
+     * Build the bundle project
      * @param files Files to process
      * @param excludedKeyPrefixes Key prefixes to exclude
      * @param flags Active rule flags
-     * @return BundleProject
+     * @return Bundle project
      */
     public static BundleProject build(Iterable<File> files, Collection<String> excludedKeyPrefixes,
             Collection<Flag> flags) {
         BundleProject bundleProject = new BundleProject();
         for (File file : files) {
             LOG.debug("Processing file '{}'", file);
-            Bundle bundle = null;
-            try {
-                if (file != null && file.exists() && file.isFile() && file.canRead()) {
-
-                    String[] fileNameSplit = getFileNameSplit(file);
-                    String name = getBundleName(file, fileNameSplit);
-                    MutableObject<Locale> localeWrapper = getBundleLocale(file, fileNameSplit);
-
-                    MutableObject<Map<String, String>> propertiesWrapper = null;
-                    if (name != null && localeWrapper != null &&
-                            (flags.contains(Flag.USES_VALUES) || flags.contains(Flag.USES_KEYS))) {
-                        propertiesWrapper = getBundleProperties(file, flags);
-                    }
-                    boolean allKeysExcluded = excludeKeys(propertiesWrapper, excludedKeyPrefixes);
-
-                    bundle = buildBundle(bundleProject, file, name, localeWrapper, propertiesWrapper, allKeysExcluded);
-                }
-            } catch (SecurityException e) {
-                LOG.error(e.getMessage(), e);
-            }
+            Bundle bundle = buildBundle(bundleProject, file, excludedKeyPrefixes, flags);
             if (bundle == null) {
                 LOG.warn("File '{}' ignored", file);
             }
         }
         return bundleProject;
+    }
+
+    /**
+     * Build a bundle
+     * @param bundleProject Bundle project
+     * @param file File to process
+     * @param excludedKeyPrefixes Key prefixes to exclude
+     * @param flags Active rule flags
+     * @return Bundle
+     */
+    private static Bundle buildBundle(BundleProject bundleProject, File file, Collection<String> excludedKeyPrefixes,
+            Collection<Flag> flags) {
+        Bundle bundle = null;
+        try {
+            if (file != null && file.exists() && file.isFile() && file.canRead()) {
+
+                String[] fileNameSplit = getFileNameSplit(file);
+                String name = getBundleName(file, fileNameSplit);
+                MutableObject<Locale> localeWrapper = getBundleLocale(file, fileNameSplit);
+
+                MutableObject<Map<String, String>> propertiesWrapper = null;
+                if (name != null && localeWrapper != null &&
+                        (flags.contains(Flag.USES_VALUES) || flags.contains(Flag.USES_KEYS))) {
+                    propertiesWrapper = getBundleProperties(file, flags);
+                }
+                boolean allKeysExcluded = excludeKeys(propertiesWrapper, excludedKeyPrefixes);
+
+                bundle = buildBundle(bundleProject, file, name, localeWrapper, propertiesWrapper, allKeysExcluded);
+            }
+        } catch (SecurityException e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return bundle;
     }
 
     /**
@@ -106,31 +120,40 @@ public final class BundleProjectBuilder {
      * Remove excluded keys
      * @param propertiesWrapper Properties wrapper
      * @param excludedKeyPrefixes Excluded key prefixes
-     * @return TRUE if all the rules have been excluded
+     * @return TRUE if all the properties have been excluded
      */
     private static boolean excludeKeys(MutableObject<Map<String, String>> propertiesWrapper,
             Collection<String> excludedKeyPrefixes) {
         if (propertiesWrapper != null && propertiesWrapper.getValue() != null &&
                 !propertiesWrapper.getValue().isEmpty() && !excludedKeyPrefixes.isEmpty()) {
-            Iterator<Entry<String, String>> i = propertiesWrapper.getValue().entrySet().iterator();
-            while (i.hasNext()) {
-                Entry<String, String> property = i.next();
-                if (property != null && property.getKey() != null) {
-                    Iterator<String> j = excludedKeyPrefixes.iterator();
-                    boolean removed = false;
-                    while (!removed && j.hasNext()) {
-                        if ((property.getKey()).startsWith(j.next())) {
-                            i.remove();
-                            removed = true;
-                        }
-                    }
-                }
-            }
+            excludeKeys(propertiesWrapper.getValue().entrySet().iterator(), excludedKeyPrefixes);
             if (propertiesWrapper.getValue().isEmpty()) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Remove excluded keys
+     * @param propertiesIterator Properties iterator
+     * @param excludedKeyPrefixes Excluded key prefixes
+     */
+    private static void excludeKeys(Iterator<Entry<String, String>> propertiesIterator,
+            Collection<String> excludedKeyPrefixes) {
+        while (propertiesIterator != null && propertiesIterator.hasNext()) {
+            Entry<String, String> property = propertiesIterator.next();
+            if (property != null && property.getKey() != null) {
+                Iterator<String> j = excludedKeyPrefixes.iterator();
+                boolean removed = false;
+                while (!removed && j.hasNext()) {
+                    if ((property.getKey()).startsWith(j.next())) {
+                        propertiesIterator.remove();
+                        removed = true;
+                    }
+                }
+            }
+        }
     }
 
     /**

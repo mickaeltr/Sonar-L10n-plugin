@@ -22,13 +22,14 @@ import fr.gimmick.sonar.l10n.model.Bundle;
 import fr.gimmick.sonar.l10n.rules.L10nRule;
 
 /**
- * Utils
+ * Localization utils
  * @author Mickaël Tricot
  */
 public final class L10nUtils {
 
     /** Collection transformer: trim to null all String */
     private static final Transformer TRANSFORMER_STRING_TRIM_TO_NULL = new Transformer() {
+        /** {@inheritDoc} */
         @Override
         public String transform(Object excludedKeyPrefix) {
             if (excludedKeyPrefix instanceof String) {
