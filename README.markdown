@@ -8,13 +8,15 @@
 
  * Key: **sonar.l10n.sourceDirectories**
  * Description: comma-separated list of source directories
- * Default value: src/main/resources, src/main/java
+ * Default:
+
+        src/main/resources, src/main/java
 
 ### Locales
 
  * Key: **sonar.l10n.locales**
  * Description: comma-separated list of locales
- * Default value: *autodiscovered*
+ * Default: *autodiscovered*
 
 ### Key prefixes excluded
 
@@ -32,12 +34,12 @@ Build and run a Sonar instance with embedded database:
 
 Go to the Sonar instance at <http://localhost:9000/>:
 
- - Login with admin/admin
- - Go to Configuration > Quality profiles
- - Create a new profile
- - Make the profile the default
- - Edit the profile, go to Coding rules
- - Select the L10n plugin (any / any) and activate the rules
+ 1. Login with admin/admin
+ 2. Go to Configuration > Quality profiles
+ 3. Create a new profile
+ 4. Make the profile the default
+ 5. Edit the profile, go to Coding rules
+ 6. Select the L10n plugin (any / any) and activate the rules
 
 In the target project, run:
 
