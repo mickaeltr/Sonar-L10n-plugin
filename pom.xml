@@ -6,7 +6,7 @@
   <groupId>fr.gimmick.sonar</groupId>
   <artifactId>sonar-l10n-plugin</artifactId>
   <name>Sonar L10n plugin</name>
-  <description>L10n properties files analysis</description>
+  <description>Sonar plugin for L10n properties files analysis</description>
   <packaging>sonar-plugin</packaging>
   <version>0.1-SNAPSHOT</version>
   <inceptionYear>2011</inceptionYear>
@@ -14,6 +14,7 @@
   <developers>
     <developer>
       <name>Mickaël Tricot</name>
+      <url>http://gimmick.fr/</url>
     </developer>
   </developers>
 
