@@ -18,6 +18,12 @@
     </developer>
   </developers>
 
+  <scm>
+    <connection>scm:git:git@github.com:mickaeltr/Sonar-L10n-plugin.git</connection>
+    <url>scm:git:git@github.com:mickaeltr/Sonar-L10n-plugin.git</url>
+    <developerConnection>scm:git:git@github.com:mickaeltr/Sonar-L10n-plugin.git</developerConnection>
+  </scm>
+
   <properties>
 
     <sonar.runtimeVersion>2.10</sonar.runtimeVersion>
