@@ -26,18 +26,18 @@
 
   <properties>
 
-    <sonar.runtimeVersion>2.10</sonar.runtimeVersion>
+    <sonar.runtimeVersion>2.11</sonar.runtimeVersion>
 
     <dependency.commons-collections.version>3.2.1</dependency.commons-collections.version>
     <dependency.commons-configuration.version>1.6</dependency.commons-configuration.version>
-    <dependency.commons-io.version>2.0.1</dependency.commons-io.version>
+    <dependency.commons-io.version>2.1</dependency.commons-io.version>
     <dependency.commons-lang.version>3.0.1</dependency.commons-lang.version>
     <dependency.commons-logging.version>1.1.1</dependency.commons-logging.version>
     <dependency.google-collections.version>1.0</dependency.google-collections.version>
     <dependency.slf4j.version>1.5.6</dependency.slf4j.version>
 
     <plugin.compiler.version>2.3.2</plugin.compiler.version>
-    <plugin.jrebel.version>1.0.7</plugin.jrebel.version>
+    <plugin.jrebel.version>1.0.8</plugin.jrebel.version>
     <plugin.sonar-packaging.version>1.1</plugin.sonar-packaging.version>
 
     <project.build.javaVersion>1.6</project.build.javaVersion>
