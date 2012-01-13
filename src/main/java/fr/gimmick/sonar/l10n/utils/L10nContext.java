@@ -1,9 +1,8 @@
 package fr.gimmick.sonar.l10n.utils;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
-
-import com.google.common.collect.ImmutableList;
 
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.profiles.RulesProfile;
@@ -37,7 +36,7 @@ public final class L10nContext {
     public L10nContext(SensorContext sensorContext, Collection<Locale> locales, RulesProfile rulesProfile,
             Project project) {
         this.sensorContext = sensorContext;
-        this.locales = ImmutableList.copyOf(locales);
+        this.locales = Collections.unmodifiableCollection(locales);
         this.rulesProfile = rulesProfile;
         this.project = project;
     }
