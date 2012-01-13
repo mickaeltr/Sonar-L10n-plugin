@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -16,6 +17,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,10 @@ import fr.gimmick.sonar.l10n.utils.L10nUtils;
  * @author Mickaël Tricot
  */
 public final class BundleProjectBuilder {
+
+    /** Bundle filename splitter */
+    private static final Pattern FILENAME_SPLITTER =
+            Pattern.compile(L10nUtils.FILENAME_NAME_LOCALE_SEPARATOR.toString());
 
     /** Logger */
     private static final Logger LOG = LoggerFactory.getLogger(BundleProjectBuilder.class);
@@ -122,7 +128,7 @@ public final class BundleProjectBuilder {
      * @param excludedKeyPrefixes Excluded key prefixes
      * @return TRUE if all the properties have been excluded
      */
-    private static boolean excludeKeys(MutableObject<Map<String, String>> propertiesWrapper,
+    private static boolean excludeKeys(Mutable<Map<String, String>> propertiesWrapper,
             Collection<String> excludedKeyPrefixes) {
         if (propertiesWrapper != null && propertiesWrapper.getValue() != null &&
                 !propertiesWrapper.getValue().isEmpty() && !excludedKeyPrefixes.isEmpty()) {
@@ -147,7 +153,7 @@ public final class BundleProjectBuilder {
                 Iterator<String> j = excludedKeyPrefixes.iterator();
                 boolean removed = false;
                 while (!removed && j.hasNext()) {
-                    if ((property.getKey()).startsWith(j.next())) {
+                    if (property.getKey().startsWith(j.next())) {
                         propertiesIterator.remove();
                         removed = true;
                     }
@@ -162,7 +168,7 @@ public final class BundleProjectBuilder {
      * @param fileNameSplit Filename split (nullable)
      * @return Locale wrapper (nullable)
      */
-    private static MutableObject<Locale> getBundleLocale(File file, String[] fileNameSplit) {
+    private static MutableObject<Locale> getBundleLocale(File file, String... fileNameSplit) {
         MutableObject<Locale> localeWrapper = null;
         if (fileNameSplit != null && fileNameSplit.length > 1) {
             try {
@@ -182,7 +188,7 @@ public final class BundleProjectBuilder {
      * @param fileNameSplit Filename split
      * @return Name (nullable)
      */
-    private static String getBundleName(File file, String[] fileNameSplit) {
+    private static String getBundleName(File file, String... fileNameSplit) {
         String name = null;
         if (fileNameSplit != null) {
             name = StringUtils.trimToNull(fileNameSplit[0]);
@@ -225,7 +231,7 @@ public final class BundleProjectBuilder {
         String[] fileNameSplit = null;
         String fileBaseName = FilenameUtils.getBaseName(file.getName());
         if (fileBaseName != null && !fileBaseName.isEmpty()) {
-            fileNameSplit = fileBaseName.split("_", 2);
+            fileNameSplit = FILENAME_SPLITTER.split(fileBaseName, 2);
         }
         if (ArrayUtils.isEmpty(fileNameSplit)) {
             fileNameSplit = null;

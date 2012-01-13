@@ -29,7 +29,6 @@
     <sonar.runtimeVersion>2.12</sonar.runtimeVersion>
 
     <dependency.commons-collections.version>3.2.1</dependency.commons-collections.version>
-    <dependency.commons-configuration.version>1.6</dependency.commons-configuration.version>
     <dependency.commons-io.version>2.1</dependency.commons-io.version>
     <dependency.commons-lang.version>3.1</dependency.commons-lang.version>
     <dependency.commons-logging.version>1.1.1</dependency.commons-logging.version>
@@ -69,12 +68,6 @@
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>${dependency.commons-collections.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-configuration</groupId>
-      <artifactId>commons-configuration</artifactId>
-      <version>${dependency.commons-configuration.version}</version>
     </dependency>
 
     <dependency>

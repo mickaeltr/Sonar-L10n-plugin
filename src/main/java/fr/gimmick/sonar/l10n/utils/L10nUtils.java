@@ -12,7 +12,10 @@ import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.sonar.api.config.Settings;
+import org.sonar.api.resources.File;
 import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
@@ -26,6 +29,9 @@ import fr.gimmick.sonar.l10n.rules.L10nRule;
  * @author Mickaël Tricot
  */
 public final class L10nUtils {
+
+    /** Filename name/locale separator */
+    public static final Character FILENAME_NAME_LOCALE_SEPARATOR = '_';
 
     /** Collection transformer: trim to null all String */
     private static final Transformer TRANSFORMER_STRING_TRIM_TO_NULL = new Transformer() {
@@ -41,13 +47,12 @@ public final class L10nUtils {
 
     /**
      * Get comma-separated values from the Sonar configuration
-     * @param project Sonar project
+     * @param settings Sonar settings
      * @param property Configuration property
      * @return Values
      */
-    public static Collection<String> getCSV(Project project, String property) {
-        Collection<String> excludedKeyPrefixes =
-                new HashSet<String>(Arrays.asList(project.getConfiguration().getStringArray(property)));
+    public static Collection<String> getCSV(Settings settings, String property) {
+        Collection<String> excludedKeyPrefixes = new HashSet<String>(Arrays.asList(settings.getStringArray(property)));
         CollectionUtils.transform(excludedKeyPrefixes, TRANSFORMER_STRING_TRIM_TO_NULL);
         excludedKeyPrefixes.remove(null);
         return Collections.unmodifiableCollection(excludedKeyPrefixes);
@@ -63,10 +68,11 @@ public final class L10nUtils {
     public static Resource getResource(Project project, Bundle bundle, Locale locale) {
         StringBuilder builder = new StringBuilder(bundle.getId().getName());
         if (locale != null) {
-            builder.append('_').append(locale.toString());
+            builder.append(FILENAME_NAME_LOCALE_SEPARATOR).append(locale.toString());
         }
-        String filename = builder.append('.').append(L10nConfiguration.FILE_EXTENSION).toString();
-        return new org.sonar.api.resources.File(Java.INSTANCE,
+        String filename =
+                builder.append(FilenameUtils.EXTENSION_SEPARATOR).append(L10nConfiguration.FILE_EXTENSION).toString();
+        return new File(Java.INSTANCE,
                 bundle.getId().getDirectory().substring(project.getFileSystem().getBasedir().getPath().length() + 1),
                 filename);
     }

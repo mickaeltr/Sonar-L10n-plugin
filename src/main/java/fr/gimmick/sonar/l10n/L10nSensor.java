@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 
@@ -29,12 +30,17 @@ public final class L10nSensor implements Sensor {
     /** Sonar rules profile */
     private final RulesProfile profile;
 
+    /** Sonar settings */
+    private final Settings settings;
+
     /**
      * Constructor
      * @param profile Sonar rules profile
+     * @param settings Sonar settings
      */
-    public L10nSensor(RulesProfile profile) {
+    public L10nSensor(RulesProfile profile, Settings settings) {
         this.profile = profile;
+        this.settings = settings;
     }
 
     /** {@inheritDoc} */
@@ -46,17 +52,16 @@ public final class L10nSensor implements Sensor {
             return;
         }
 
-        Collection<File> directories = L10nConfiguration.getConfigurationDirectories(project);
+        Collection<File> directories = L10nConfiguration.getConfigurationDirectories(project, settings);
         Collection<File> files = L10nConfiguration.getFiles(directories);
-        Collection<String> excludedKeyPrefixes = L10nConfiguration.getExcludedKeyPrefixes(project);
+        Collection<String> excludedKeyPrefixes = L10nConfiguration.getExcludedKeyPrefixes(settings);
         Collection<Flag> flags = L10nConfiguration.getActiveRuleFlags(profile);
         BundleProject l10nProject = BundleProjectBuilder.build(files, excludedKeyPrefixes, flags);
-        Collection<Locale> locales = L10nConfiguration.getConfigurationLocales(project, l10nProject.getLocales());
+        Collection<Locale> locales = L10nConfiguration.getConfigurationLocales(settings, l10nProject.getLocales());
         L10nContext configuration = new L10nContext(context, locales, profile, project);
 
         for (L10nRule rule : L10nRuleRepository.RULES) {
             if (L10nConfiguration.isActiveRule(profile, rule.getClass())) {
-                // TODO Try to run the violations check in different threads to fasten the process...
                 rule.checkViolations(l10nProject, configuration);
             }
         }

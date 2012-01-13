@@ -8,7 +8,7 @@ import com.google.common.collect.ImmutableMap;
  * Represents a bundle file
  * @author Mickaël Tricot
  */
-public class BundleFile {
+public final class BundleFile {
 
     /** If all the keys have been excluded: properties are empty, but they are actually not! */
     private final boolean allKeysExcluded;

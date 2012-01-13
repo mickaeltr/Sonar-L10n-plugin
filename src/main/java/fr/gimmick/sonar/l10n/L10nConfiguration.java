@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.config.Settings;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.ActiveRule;
@@ -27,6 +29,9 @@ import fr.gimmick.sonar.l10n.utils.L10nUtils;
  * @author Mickaël Tricot
  */
 public final class L10nConfiguration {
+
+    /** CSV splitter */
+    private static final Pattern CSV_SPLITTER = Pattern.compile(",");
 
     /** File extension to check */
     public static final String FILE_EXTENSION = "properties";
@@ -94,10 +99,11 @@ public final class L10nConfiguration {
     /**
      * Get the directories from the Sonar configuration
      * @param project Sonar project
+     * @param settings Sonar settings
      * @return Directories
      */
-    public static Collection<File> getConfigurationDirectories(Project project) {
-        Collection<String> directoryPaths = L10nUtils.getCSV(project, PROPERTY_SOURCE_DIRECTORIES_KEY);
+    public static Collection<File> getConfigurationDirectories(Project project, Settings settings) {
+        Collection<String> directoryPaths = L10nUtils.getCSV(settings, PROPERTY_SOURCE_DIRECTORIES_KEY);
         Collection<File> directories = new HashSet<File>(directoryPaths.size());
         for (String directoryPath : directoryPaths) {
             File directory = getConfigurationDirectory(project, directoryPath, true);
@@ -108,7 +114,7 @@ public final class L10nConfiguration {
         if (directories.isEmpty()) {
             LOG.info("{}: no directory (properly) configured, falling back to default directories '{}'",
                     PROPERTY_SOURCE_DIRECTORIES_KEY, PROPERTY_SOURCE_DIRECTORIES_VALUE);
-            for (String directoryPath : PROPERTY_SOURCE_DIRECTORIES_VALUE.split("'")) {
+            for (String directoryPath : CSV_SPLITTER.split(PROPERTY_SOURCE_DIRECTORIES_VALUE)) {
                 File directory = getConfigurationDirectory(project, directoryPath, false);
                 if (directory != null) {
                     directories.add(directory);
@@ -173,12 +179,12 @@ public final class L10nConfiguration {
 
     /**
      * Get the locales to check from the Sonar configuration
-     * @param project Sonar project
+     * @param settings Sonar settings
      * @param defaultLocales Default locales (if empty or not found in the configuration)
      * @return Locales to check
      */
-    public static Collection<Locale> getConfigurationLocales(Project project, Collection<Locale> defaultLocales) {
-        Collection<String> localeStrings = L10nUtils.getCSV(project, PROPERTY_LOCALES_KEY);
+    public static Collection<Locale> getConfigurationLocales(Settings settings, Collection<Locale> defaultLocales) {
+        Collection<String> localeStrings = L10nUtils.getCSV(settings, PROPERTY_LOCALES_KEY);
         Collection<Locale> locales = new HashSet<Locale>(localeStrings.size());
         for (String localeString : localeStrings) {
             MutableObject<Locale> localeWrapper = getConfigurationLocale(localeString);
@@ -197,11 +203,11 @@ public final class L10nConfiguration {
 
     /**
      * Get the excluded key prefixes from the Sonar configuration
-     * @param project Sonar project
+     * @param settings Sonar settings
      * @return Excluded key prefixes
      */
-    public static Collection<String> getExcludedKeyPrefixes(Project project) {
-        return L10nUtils.getCSV(project, PROPERTY_EXCLUDE_KEY_PREFIXES);
+    public static Collection<String> getExcludedKeyPrefixes(Settings settings) {
+        return L10nUtils.getCSV(settings, PROPERTY_EXCLUDE_KEY_PREFIXES);
     }
 
     /**
