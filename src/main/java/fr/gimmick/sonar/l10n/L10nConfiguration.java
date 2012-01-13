@@ -193,11 +193,12 @@ public final class L10nConfiguration {
             }
         }
         if (locales.isEmpty()) {
-            LOG.info("{}: no locale (properly) configured, falling back to locales auto-discovered {}",
-                    PROPERTY_LOCALES_KEY, defaultLocales);
             locales = defaultLocales;
+            LOG.info("{}: {}, no locale (properly) configured, falling back to locales auto-discovered",
+                    PROPERTY_LOCALES_KEY, defaultLocales);
+        } else {
+            LOG.info("{}: {}", PROPERTY_LOCALES_KEY, locales);
         }
-        LOG.info("{}: {}", PROPERTY_LOCALES_KEY, locales);
         return Collections.unmodifiableCollection(locales);
     }
 
