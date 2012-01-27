@@ -26,7 +26,7 @@
 
   <properties>
 
-    <sonar.runtimeVersion>2.12</sonar.runtimeVersion>
+    <sonar.runtimeVersion>2.13</sonar.runtimeVersion>
 
     <dependency.commons-collections.version>3.2.1</dependency.commons-collections.version>
     <dependency.commons-io.version>2.1</dependency.commons-io.version>
