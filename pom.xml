@@ -13,10 +13,18 @@
 
   <developers>
     <developer>
+      <id>mickaeltr</id>
       <name>Mickaël Tricot</name>
       <url>http://gimmick.fr/</url>
     </developer>
   </developers>
+
+  <licenses>
+    <license>
+      <name>WTFPL</name>
+      <url>http://sam.zoy.org/wtfpl/COPYING</url>
+    </license>
+  </licenses>
 
   <scm>
     <connection>scm:git:git@github.com:mickaeltr/Sonar-L10n-plugin.git</connection>
