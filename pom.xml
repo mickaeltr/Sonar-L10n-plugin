@@ -10,6 +10,7 @@
   <packaging>sonar-plugin</packaging>
   <version>0.1-SNAPSHOT</version>
   <inceptionYear>2011</inceptionYear>
+  <url>https://github.com/mickaeltr/Sonar-L10n-plugin</url>
 
   <developers>
     <developer>
@@ -161,6 +162,16 @@
       </build>
     </profile>
   </profiles>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/mickaeltr/Sonar-L10n-plugin/issues</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>https://buildhive.cloudbees.com/job/mickaeltr/job/Sonar-L10n-plugin</url>
+  </ciManagement>
 
   <prerequisites>
     <maven>2.2.1</maven>
