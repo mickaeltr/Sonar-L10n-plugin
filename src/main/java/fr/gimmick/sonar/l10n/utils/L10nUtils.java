@@ -52,10 +52,10 @@ public final class L10nUtils {
      * @return Values
      */
     public static Collection<String> getCSV(Settings settings, String property) {
-        Collection<String> excludedKeyPrefixes = new HashSet<String>(Arrays.asList(settings.getStringArray(property)));
-        CollectionUtils.transform(excludedKeyPrefixes, TRANSFORMER_STRING_TRIM_TO_NULL);
-        excludedKeyPrefixes.remove(null);
-        return Collections.unmodifiableCollection(excludedKeyPrefixes);
+        Collection<String> csv = new HashSet<String>(Arrays.asList(settings.getStringArray(property)));
+        CollectionUtils.transform(csv, TRANSFORMER_STRING_TRIM_TO_NULL);
+        csv.remove(null);
+        return Collections.unmodifiableCollection(csv);
     }
 
     /**
