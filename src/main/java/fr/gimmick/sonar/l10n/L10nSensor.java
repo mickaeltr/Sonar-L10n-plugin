@@ -1,9 +1,10 @@
 package fr.gimmick.sonar.l10n;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.Locale;
-
+import fr.gimmick.sonar.l10n.model.BundleProject;
+import fr.gimmick.sonar.l10n.model.BundleProjectBuilder;
+import fr.gimmick.sonar.l10n.rules.L10nRule;
+import fr.gimmick.sonar.l10n.rules.L10nRule.Flag;
+import fr.gimmick.sonar.l10n.utils.L10nContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
@@ -12,11 +13,9 @@ import org.sonar.api.config.Settings;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 
-import fr.gimmick.sonar.l10n.model.BundleProject;
-import fr.gimmick.sonar.l10n.model.BundleProjectBuilder;
-import fr.gimmick.sonar.l10n.rules.L10nRule;
-import fr.gimmick.sonar.l10n.rules.L10nRule.Flag;
-import fr.gimmick.sonar.l10n.utils.L10nContext;
+import java.io.File;
+import java.util.Collection;
+import java.util.Locale;
 
 /**
  * Localization sensor
@@ -43,7 +42,6 @@ public final class L10nSensor implements Sensor {
         this.settings = settings;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void analyse(Project project, SensorContext context) {
 
@@ -67,7 +65,6 @@ public final class L10nSensor implements Sensor {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean shouldExecuteOnProject(Project project) {
         // this sensor is executed on any type of project

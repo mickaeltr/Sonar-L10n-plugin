@@ -25,15 +25,13 @@ public final class BundleId {
         this.name = name;
     }
 
-    /** {@inheritDoc} */
     @Override
-    public boolean equals(Object o) {
-        return this == o || o instanceof BundleId && ObjectUtils.equals(getName(), ((BundleId) o).getName()) &&
-                ObjectUtils.equals(getDirectory(), ((BundleId) o).getDirectory());
+    public boolean equals(Object obj) {
+        return this == obj || obj instanceof BundleId && ObjectUtils.equals(getName(), ((BundleId) obj).getName()) &&
+                ObjectUtils.equals(getDirectory(), ((BundleId) obj).getDirectory());
 
     }
 
-    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         return ObjectUtils.hashCode(getClass()) *

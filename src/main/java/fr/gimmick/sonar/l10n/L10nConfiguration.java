@@ -1,13 +1,8 @@
 package fr.gimmick.sonar.l10n;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.regex.Pattern;
-
+import fr.gimmick.sonar.l10n.rules.L10nRule;
+import fr.gimmick.sonar.l10n.rules.L10nRule.Flag;
+import fr.gimmick.sonar.l10n.utils.L10nUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.LocaleUtils;
@@ -20,9 +15,13 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.ActiveRule;
 
-import fr.gimmick.sonar.l10n.rules.L10nRule;
-import fr.gimmick.sonar.l10n.rules.L10nRule.Flag;
-import fr.gimmick.sonar.l10n.utils.L10nUtils;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * Localization plugin configuration
@@ -146,7 +145,7 @@ public final class L10nConfiguration {
                 }
             } catch (SecurityException e) {
                 LOG.error(PROPERTY_SOURCE_DIRECTORIES_KEY + ": cannot execute or read directory '" +
-                        directoryPathTrimmed + "'", e);
+                        directoryPathTrimmed + '\'', e);
             }
             if (log && directory == null) {
                 LOG.error("{}: invalid directory '{}'", PROPERTY_SOURCE_DIRECTORIES_KEY, directoryPathTrimmed);
@@ -157,11 +156,11 @@ public final class L10nConfiguration {
 
     /**
      * Get the locale from a String
-     * @param string String
+     * @param locale String
      * @return Locale wrapper (nullable)
      */
-    private static MutableObject<Locale> getConfigurationLocale(String string) {
-        String localeStringTrimmed = StringUtils.trimToNull(string);
+    private static MutableObject<Locale> getConfigurationLocale(String locale) {
+        String localeStringTrimmed = StringUtils.trimToNull(locale);
         MutableObject<Locale> localeWrapper = null;
         if (localeStringTrimmed != null) {
             if (PROPERTY_LOCALES_VALUE_NULL.equalsIgnoreCase(localeStringTrimmed)) {
@@ -169,8 +168,8 @@ public final class L10nConfiguration {
             } else {
                 try {
                     localeWrapper = new MutableObject<Locale>(LocaleUtils.toLocale(localeStringTrimmed));
-                } catch (IllegalArgumentException e) {
-                    LOG.error("{}: cannot create locale '{}'", PROPERTY_LOCALES_KEY, string);
+                } catch (IllegalArgumentException ignored) {
+                    LOG.error("{}: cannot create locale '{}'", PROPERTY_LOCALES_KEY, locale);
                 }
             }
         }

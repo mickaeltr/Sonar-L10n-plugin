@@ -1,16 +1,7 @@
 package fr.gimmick.sonar.l10n.model;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.regex.Pattern;
-
+import fr.gimmick.sonar.l10n.rules.L10nRule.Flag;
+import fr.gimmick.sonar.l10n.utils.L10nUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -22,8 +13,16 @@ import org.apache.commons.lang3.mutable.MutableObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.gimmick.sonar.l10n.rules.L10nRule.Flag;
-import fr.gimmick.sonar.l10n.utils.L10nUtils;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.regex.Pattern;
 
 /**
  * Builder for the BundleProject
@@ -78,7 +77,7 @@ public final class BundleProjectBuilder {
 
                 MutableObject<Map<String, String>> propertiesWrapper = null;
                 if (name != null && localeWrapper != null &&
-                        (flags.contains(Flag.USES_VALUES) || flags.contains(Flag.USES_KEYS))) {
+                        (flags.contains(Flag.UsesValues) || flags.contains(Flag.UsesKeys))) {
                     propertiesWrapper = getBundleProperties(file, flags);
                 }
                 boolean allKeysExcluded = excludeKeys(propertiesWrapper, excludedKeyPrefixes);
@@ -130,14 +129,15 @@ public final class BundleProjectBuilder {
      */
     private static boolean excludeKeys(Mutable<Map<String, String>> propertiesWrapper,
             Collection<String> excludedKeyPrefixes) {
+        boolean excludeKeys = false;
         if (propertiesWrapper != null && propertiesWrapper.getValue() != null &&
                 !propertiesWrapper.getValue().isEmpty() && !excludedKeyPrefixes.isEmpty()) {
             excludeKeys(propertiesWrapper.getValue().entrySet().iterator(), excludedKeyPrefixes);
             if (propertiesWrapper.getValue().isEmpty()) {
-                return true;
+                excludeKeys = true;
             }
         }
-        return false;
+        return excludeKeys;
     }
 
     /**
@@ -150,12 +150,12 @@ public final class BundleProjectBuilder {
         while (propertiesIterator != null && propertiesIterator.hasNext()) {
             Entry<String, String> property = propertiesIterator.next();
             if (property != null && property.getKey() != null) {
-                Iterator<String> j = excludedKeyPrefixes.iterator();
-                boolean removed = false;
-                while (!removed && j.hasNext()) {
-                    if (property.getKey().startsWith(j.next())) {
+                Iterator<String> iExcludeKeyPrefixes = excludedKeyPrefixes.iterator();
+                boolean notRemoved = true;
+                while (notRemoved && iExcludeKeyPrefixes.hasNext()) {
+                    if (property.getKey().startsWith(iExcludeKeyPrefixes.next())) {
                         propertiesIterator.remove();
-                        removed = true;
+                        notRemoved = false;
                     }
                 }
             }
@@ -173,7 +173,7 @@ public final class BundleProjectBuilder {
         if (fileNameSplit != null && fileNameSplit.length > 1) {
             try {
                 localeWrapper = new MutableObject<Locale>(LocaleUtils.toLocale(fileNameSplit[1]));
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException ignored) {
                 LOG.error("Invalid bundle locale '{}' for file '{}'", fileNameSplit[1], file);
             }
         } else {
@@ -213,7 +213,7 @@ public final class BundleProjectBuilder {
             is = FileUtils.openInputStream(file);
             properties.load(is);
             propertiesWrapper = new MutableObject<Map<String, String>>(
-                    L10nUtils.toMap(properties, !flags.contains(Flag.USES_VALUES)));
+                    L10nUtils.toMap(properties, !flags.contains(Flag.UsesValues)));
         } catch (IOException e) {
             LOG.error("Error while processing file " + file, e);
         } finally {

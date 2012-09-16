@@ -1,15 +1,8 @@
 package fr.gimmick.sonar.l10n.utils;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
+import fr.gimmick.sonar.l10n.L10nConfiguration;
+import fr.gimmick.sonar.l10n.model.Bundle;
+import fr.gimmick.sonar.l10n.rules.L10nRule;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.io.FilenameUtils;
@@ -20,9 +13,15 @@ import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 
-import fr.gimmick.sonar.l10n.L10nConfiguration;
-import fr.gimmick.sonar.l10n.model.Bundle;
-import fr.gimmick.sonar.l10n.rules.L10nRule;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * Localization utils
@@ -65,7 +64,7 @@ public final class L10nUtils {
      * @param locale Locale
      * @return Sonar resource
      */
-    public static Resource getResource(Project project, Bundle bundle, Locale locale) {
+    public static Resource<?> getResource(Project project, Bundle bundle, Locale locale) {
         StringBuilder builder = new StringBuilder(bundle.getId().getName());
         if (locale != null) {
             builder.append(FILENAME_NAME_LOCALE_SEPARATOR).append(locale.toString());

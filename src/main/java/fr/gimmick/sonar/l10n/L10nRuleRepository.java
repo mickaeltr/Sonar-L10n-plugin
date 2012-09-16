@@ -1,20 +1,18 @@
 package fr.gimmick.sonar.l10n;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
-
-import org.sonar.api.resources.Java;
-import org.sonar.api.rules.Rule;
-import org.sonar.api.rules.RuleRepository;
-
 import fr.gimmick.sonar.l10n.rules.L10nRule;
 import fr.gimmick.sonar.l10n.rules.MissingBundleRule;
 import fr.gimmick.sonar.l10n.rules.MissingKeyRule;
 import fr.gimmick.sonar.l10n.rules.MissingValueRule;
 import fr.gimmick.sonar.l10n.rules.UnusedBundleRule;
+import org.sonar.api.resources.Java;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RuleRepository;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Localization rule repository
@@ -32,7 +30,6 @@ public final class L10nRuleRepository extends RuleRepository {
         setName(L10nPlugin.KEY);
     }
 
-    /** {@inheritDoc} */
     @Override
     public List<Rule> createRules() {
         List<Rule> rules = new ArrayList<Rule>(RULES.size());

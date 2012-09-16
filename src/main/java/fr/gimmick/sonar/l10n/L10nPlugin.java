@@ -1,12 +1,11 @@
 package fr.gimmick.sonar.l10n;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
-
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
+
+import java.util.List;
 
 /**
  * Localization plugin
@@ -24,13 +23,11 @@ public final class L10nPlugin extends SonarPlugin {
     /** Plugin key */
     public static final String KEY = "L10n";
 
-    /** {@inheritDoc} */
     @Override
-    public List getExtensions() {
+    public List<?> getExtensions() {
         return ImmutableList.of(L10nRuleRepository.class, L10nSensor.class);
     }
 
-    /** {@inheritDoc} */
     @Override
     public String toString() {
         return getClass().getSimpleName();

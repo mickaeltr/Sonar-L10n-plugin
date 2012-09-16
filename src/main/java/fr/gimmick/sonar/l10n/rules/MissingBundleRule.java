@@ -1,22 +1,21 @@
 package fr.gimmick.sonar.l10n.rules;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-
-import org.apache.commons.lang3.StringUtils;
-import org.sonar.api.rules.Rule;
-import org.sonar.api.rules.RulePriority;
-import org.sonar.api.rules.Violation;
-import org.sonar.check.Cardinality;
-
 import fr.gimmick.sonar.l10n.L10nConfiguration;
 import fr.gimmick.sonar.l10n.L10nPlugin;
 import fr.gimmick.sonar.l10n.model.Bundle;
 import fr.gimmick.sonar.l10n.model.BundleProject;
 import fr.gimmick.sonar.l10n.utils.L10nContext;
 import fr.gimmick.sonar.l10n.utils.L10nUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RulePriority;
+import org.sonar.api.rules.Violation;
+import org.sonar.check.Cardinality;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * Missing bundle localization rule
@@ -37,7 +36,6 @@ public final class MissingBundleRule implements L10nRule {
         rule.setDescription("Localization bundle that is expected to be available");
     }
 
-    /** {@inheritDoc} */
     @Override
     public void checkViolations(BundleProject project, L10nContext context) {
         for (Bundle bundle : project.getBundles().values()) {
@@ -54,13 +52,11 @@ public final class MissingBundleRule implements L10nRule {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public Collection<Flag> getFlags() {
         return Collections.emptyList();
     }
 
-    /** {@inheritDoc} */
     @Override
     public Rule getRule() {
         return rule;

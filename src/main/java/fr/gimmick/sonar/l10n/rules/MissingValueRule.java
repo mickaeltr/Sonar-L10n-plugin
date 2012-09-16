@@ -1,19 +1,6 @@
 package fr.gimmick.sonar.l10n.rules;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map.Entry;
-
 import com.google.common.collect.ImmutableList;
-
-import org.apache.commons.lang3.StringUtils;
-import org.sonar.api.resources.Resource;
-import org.sonar.api.rules.Rule;
-import org.sonar.api.rules.RulePriority;
-import org.sonar.api.rules.Violation;
-import org.sonar.check.Cardinality;
-
 import fr.gimmick.sonar.l10n.L10nConfiguration;
 import fr.gimmick.sonar.l10n.L10nPlugin;
 import fr.gimmick.sonar.l10n.model.Bundle;
@@ -21,6 +8,17 @@ import fr.gimmick.sonar.l10n.model.BundleFile;
 import fr.gimmick.sonar.l10n.model.BundleProject;
 import fr.gimmick.sonar.l10n.utils.L10nContext;
 import fr.gimmick.sonar.l10n.utils.L10nUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RulePriority;
+import org.sonar.api.rules.Violation;
+import org.sonar.check.Cardinality;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map.Entry;
 
 /**
  * Missing value localization rule
@@ -41,7 +39,6 @@ public final class MissingValueRule implements L10nRule {
         rule.setDescription("Localization value that are expected to be available");
     }
 
-    /** {@inheritDoc} */
     @Override
     public void checkViolations(BundleProject project, L10nContext context) {
         for (Bundle bundle : project.getBundles().values()) {
@@ -54,7 +51,7 @@ public final class MissingValueRule implements L10nRule {
                         }
                     }
                     if (!missingValues.isEmpty()) {
-                        Resource resource = L10nUtils.getResource(context.getProject(), bundle, file.getKey());
+                        Resource<?> resource = L10nUtils.getResource(context.getProject(), bundle, file.getKey());
                         for (String value : missingValues) {
                             Violation violation = Violation
                                     .create(L10nConfiguration.getActiveRule(context.getRulesProfile(), getClass()),
@@ -70,13 +67,11 @@ public final class MissingValueRule implements L10nRule {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
     public Collection<Flag> getFlags() {
-        return ImmutableList.of(Flag.USES_KEYS, Flag.USES_VALUES);
+        return ImmutableList.of(Flag.UsesKeys, Flag.UsesValues);
     }
 
-    /** {@inheritDoc} */
     @Override
     public Rule getRule() {
         return rule;

@@ -1,12 +1,12 @@
 package fr.gimmick.sonar.l10n.model;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
-
-import org.apache.commons.lang3.ObjectUtils;
 
 /**
  * Represents a bundle: set of L10n properties files
@@ -33,14 +33,12 @@ public final class Bundle {
         files = new HashMap<Locale, BundleFile>();
     }
 
-    /** {@inheritDoc} */
     @Override
-    public boolean equals(Object o) {
-        return this == o || o instanceof Bundle && ObjectUtils.equals(getId(), ((Bundle) o).getId());
+    public boolean equals(Object obj) {
+        return this == obj || obj instanceof Bundle && ObjectUtils.equals(getId(), ((Bundle) obj).getId());
 
     }
 
-    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         return ObjectUtils.hashCode(getId());

@@ -1,11 +1,10 @@
 package fr.gimmick.sonar.l10n.rules;
 
-import java.util.Collection;
-
-import org.sonar.api.rules.Rule;
-
 import fr.gimmick.sonar.l10n.model.BundleProject;
 import fr.gimmick.sonar.l10n.utils.L10nContext;
+import org.sonar.api.rules.Rule;
+
+import java.util.Collection;
 
 /**
  * Localization rule
@@ -16,9 +15,9 @@ public interface L10nRule {
     /** Flags indicating which information needs to be retrieved in order to check the violations */
     enum Flag {
         /** Need to process the bundle keys */
-        USES_KEYS,
+        UsesKeys,
         /** Need to process the bundle values */
-        USES_VALUES
+        UsesValues
     }
 
     /**
